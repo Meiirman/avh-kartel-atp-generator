@@ -10,3 +10,57 @@
          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 FileNotFoundError: [Errno 2] No such file or directory: 'типы работ.json'
 
+2023-12-14 10:54:00: Traceback (most recent call last):
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 115, in get_orders
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 115, in <listcomp>
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                          ~~~~~~~^^^^^
+KeyError: 'УЛТ'
+
+2023-12-14 10:59:06: Traceback (most recent call last):
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in get_orders
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in <listcomp>
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                          ~~~~~~~^^^^^
+KeyError: 'УЛТ'
+
+2023-12-14 11:01:05: Traceback (most recent call last):
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in get_orders
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in <listcomp>
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                          ~~~~~~~^^^^^
+KeyError: 'УЛТ'
+
+2023-12-14 11:01:57: Traceback (most recent call last):
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in get_orders
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in <listcomp>
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                          ~~~~~~~^^^^^
+KeyError: 'УЛТ'
+
+2023-12-14 11:03:34: Traceback (most recent call last):
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in get_orders
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in <listcomp>
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                          ~~~~~~~^^^^^
+KeyError: 'УЛТ'
+
+2023-12-14 11:04:26: Traceback (most recent call last):
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in get_orders
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\22186\Desktop\WORK_FOLDER\1. DEV\avh-kartel-atp-generator\scripts\operations.py", line 116, in <listcomp>
+    multi_ORDER_REGION = [regions[iii]["reg_name"] for iii in [i.text.strip() for i in soup.find_all("region_code")]] # DONE
+                          ~~~~~~~^^^^^
+KeyError: 'УЛТ'
+

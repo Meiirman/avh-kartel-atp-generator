@@ -49,6 +49,7 @@ def send_message(message):
 
 def browse_folder(entry_var : tk.StringVar) -> None:
     folder_selected = filedialog.askdirectory()
+    set_work_folder(folder_selected)
     entry_var.set(folder_selected)
 
 
@@ -151,7 +152,7 @@ def get_orders(project: Project) -> dict:
             }
             result.append(data)
     except:
-        log_text(traceback.format_exc())
+        print(traceback.format_exc())
         if project.show_errors_window:
             send_message("Произошла ошибка\n" + traceback.format_exc())
     return {"result" : result, "status" : 0}
