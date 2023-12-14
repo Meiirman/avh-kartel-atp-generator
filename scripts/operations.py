@@ -44,6 +44,7 @@ def set_work_folder(folder_path):
 def send_message(message):
     root = tk.Tk()
     root.withdraw()
+    print(message)
     messagebox.showinfo("Формировать отчет", message)
 
 
@@ -51,6 +52,21 @@ def browse_folder(entry_var : tk.StringVar) -> None:
     folder_selected = filedialog.askdirectory()
     set_work_folder(folder_selected)
     entry_var.set(folder_selected)
+
+
+
+import re
+
+def get_text_with(text, latin=True, kirillica=False, chars=("_", "!")):
+    pattern = r'\b(?:' + '|'.join(chars) + r')\b'
+    text = re.sub(pattern, ' ', text)
+
+    if latin:
+        text = re.sub(r'[^a-zA-Z_]+', ' ', text)
+    if kirillica:
+        text = re.sub(r'[^а-яА-Я_]+', ' ', text)
+
+    return [word.strip() for word in text.split() if word.strip()]
 
 
 def get_orders(project: Project) -> dict:
@@ -77,7 +93,6 @@ def get_orders(project: Project) -> dict:
     
     # преобразовать html в правильный формат
     html_file = open(html_file_path, 'r', encoding='utf-8') # type: ignore
-    print(html_file_path)
     html_content = replace_p_tags_with_br(html_file.read())
 
     # преобразовать html 
@@ -210,13 +225,16 @@ def get_TYPE_OF_WORK(file_name):
     return types_of_works[re.findall(r'\((.*?)\)', file_name.split("\\")[-1])[0]]
     
     
-def get_FILE_NAME(ATP_OR_AVR, BS_NAME, TYPE_OF_WORK):
+def get_FILE_NAME(ATP_OR_AVR, BS_NAME, TYPE_OF_WORK, index=""):
+    if index != "":
+        index = " (" + f'{index}' + ")"
+
     variants = {
         "АТП" : {
-            "демонтажных работ" : f"АТП_ДМР_{BS_NAME}_",
-            "монтажных работ" : f"АТП_МР_{BS_NAME}_",
-            "строительных работ" : f"{BS_NAME}_АТП_",
-            "электро-монтажных работ" : f"АТП_ЭМР_{BS_NAME}_",
+            "демонтажных работ" : f"АТП_ДМР_{BS_NAME}_{index}",
+            "монтажных работ" : f"АТП_МР_{BS_NAME}_{index}",
+            "строительных работ" : f"{BS_NAME}_АТП_{index}",
+            "электро-монтажных работ" : f"АТП_ЭМР_{BS_NAME}_{index}",
         },
         "АВР" : {
             "демонтажных работ" : f"АВР_ДМР_{BS_NAME}_",
@@ -266,8 +284,24 @@ def get_BS_NUMBER(text, file_name):
 
     
 def get_BS_NAME(text):
-    words = text.split("\"")
-    return words[1] 
+    try:
+        words = text.split("\"")
+        return words[1] 
+    except:
+        try: return get_text_with(text, latin=True, kirillica=False, chars=("_", "!"))[0]
+        except: 
+            try: 
+                for i in text.split(" "):
+                    if "БС" in i:
+                        return i
+
+                for i in text.split(" "):
+                    if "_" in i:
+                        return i
+                return text.split(" ")[0]
+            except: 
+                return "Не_известеное_название_БС"
+
 
     
 def get_BS_ADDRESS(text):
@@ -373,10 +407,22 @@ def get_ORDER_DOGOVOR_DATE(dogovor_data):
     return ORDER_DOGOVOR_DATE
 
 
+def get__there_should_be_an_smeta_if_there_is_this_text():
+    there_should_be_an_smeta_if_there_is_this_text: str
+    with open("config/config.json", "r", encoding="utf-8") as f:
+        there_should_be_an_smeta_if_there_is_this_text = json.load(f)["there_should_be_an_smeta_if_there_is_this_text"]
+    if there_should_be_an_smeta_if_there_is_this_text != "":
+        return there_should_be_an_smeta_if_there_is_this_text
+    else:
+
+        # send_message("Укажите путь к рабочей папке")
+        return ""
+
 
 def get_have_smeta(order) -> bool:
     order_str = f"{order}"
-    if "согласно сметного расчета в приложении" in order_str:
+    there_should_be_an_smeta_if_there_is_this_text = get__there_should_be_an_smeta_if_there_is_this_text()
+    if there_should_be_an_smeta_if_there_is_this_text.lower() in order_str.lower():
         return True
     return False
 
@@ -438,7 +484,8 @@ def get_smeta(order):
     if files:
         for file in files:
             if file.endswith(('.docx')):
-                docx_files.append(folder + "/" + file )  
+                docx_files.append(folder + "/" + file )
+
         if len(docx_files) == 0:
             send_message("Для заказа требуется смета которую не нашел в папке. Пожалуйста добавьте смету в папку")
     else:
@@ -447,7 +494,7 @@ def get_smeta(order):
     
 
     for file in docx_files:
-        if order['BS_NAME'] in file:
+        if order['BS_NAME'] in file and "смета" in file.lower():
             return file
 
     send_message("В папке нет нужной сметы. Пожалуйста добавьте смету в папку")
@@ -466,7 +513,7 @@ def ADD_END(typez, input_path, output_path, data):
     combine_docx(input_path, "templates/ШАБЛОН WITH END.docx", output_path, True, typez == "АТП" )
 
 
-def create_files(folder, data, tmpl_type, have_smeta=False):
+def create_files(folder, data, tmpl_type, have_smeta=False, index=""):
 
     if " - " in data['BS_NAME']:
         BS_ADDRESSx=data['BS_ADDRESS']
@@ -476,13 +523,15 @@ def create_files(folder, data, tmpl_type, have_smeta=False):
         except: data['BS_ADDRESS'] = BS_ADDRESSx
         
     smeta_path = ""
+
     if have_smeta:
         smeta_path = get_smeta(data)
+        print(smeta_path)
 
     if "atp" in tmpl_type:
         template_ATP = DocxTemplate("templates/ШАБЛОН АТП.docx")    
         template_ATP.render(data)
-        file_name__ATP = get_FILE_NAME("АТП", data['BS_NAME'], data['TYPE_OF_WORK'])
+        file_name__ATP = get_FILE_NAME("АТП", data['BS_NAME'], data['TYPE_OF_WORK'], index=index)
         output_path = folder + "/" + file_name__ATP + ".docx"
         template_ATP.save(output_path)
         if smeta_path != "":
@@ -493,7 +542,7 @@ def create_files(folder, data, tmpl_type, have_smeta=False):
     if "avr" in tmpl_type:
         template_AVR = DocxTemplate("templates/ШАБЛОН АВР.docx")    
         template_AVR.render(data)
-        file_name__AVR = get_FILE_NAME("АВР", data['BS_NAME'], data['TYPE_OF_WORK'])
+        file_name__AVR = get_FILE_NAME("АВР", data['BS_NAME'], data['TYPE_OF_WORK'], index=index)
         output_path = folder + "/" + file_name__AVR + ".docx"
         template_AVR.save(output_path)
         if smeta_path != "":

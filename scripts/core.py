@@ -135,20 +135,23 @@ def generate(tmpl_type: str, project):
     
     # print(orders['result'])
     
-    for order in orders['result']:
-        print(order)
-        
+    for index, order in enumerate(orders['result']):
+
+        if len(orders['result']) == 1:
+            index = ""
+        else:
+            index = index + 1
 
         have_smeta: bool = get_have_smeta(order) # type: ignore
         
         if "atp" == tmpl_type: # type: ignore
-            create_files(data=order, folder=get_work_folder(), tmpl_type=tmpl_type, have_smeta=have_smeta)    
+            create_files(data=order, folder=get_work_folder(), tmpl_type=tmpl_type, have_smeta=have_smeta, index=index)    
         
         elif "avr" == tmpl_type: # type: ignore
-            create_files(data=order, folder=get_work_folder(), tmpl_type=tmpl_type, have_smeta=have_smeta)    
+            create_files(data=order, folder=get_work_folder(), tmpl_type=tmpl_type, have_smeta=have_smeta, index=index)    
         
         elif "atp avr" == tmpl_type: # type: ignore
-            create_files(data=order, folder=get_work_folder(), tmpl_type=tmpl_type, have_smeta=have_smeta)    
+            create_files(data=order, folder=get_work_folder(), tmpl_type=tmpl_type, have_smeta=have_smeta, index=index)    
         
     send_report(text="АТП АВР Генератор", process="АТП АВР Генератор", responsible=os.getlogin())
     send_message("Готово!")
